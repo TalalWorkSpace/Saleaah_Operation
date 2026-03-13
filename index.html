@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>سلعة — لوحة التحكم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Reset ─────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── Variables ─────────────────────────────────── */
+      :root {
+        --primary: #745ff2;
+        --primary-hover: #6350d9;
+        --bg: #f5f4fa;
+        --card: #ffffff;
+        --text: #1e1b2e;
+        --muted: #71717a;
+        --ok: #22c55e;
+        --err: #ef4444;
+        --radius: 10px;
+      }
+
+      /* ── Body & Pattern ────────────────────────────── */
+      body {
+        font-family: "Cairo", sans-serif;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--text);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        /*
+          ▼ استبدل الرابط أدناه برابط pattern.png العام ▼
+          مثال Drive:
+          url('https://drive.google.com/uc?export=view&id=FILE_ID')
+        */
+        background-image: url("PATTERN_URL_HERE");
+        background-repeat: repeat;
+        background-size: 180px 180px;
+        opacity: 0.08;
+        pointer-events: none;
+      }
+
+      /* ── Fade-in ───────────────────────────────────── */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .app {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+        animation: fadeIn 0.5s ease both;
+      }
+
+      /* ── Header ────────────────────────────────────── */
+      .header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .header img {
+        width: 68px;
+        height: 68px;
+        border-radius: 14px;
+        display: block;
+        margin: 0 auto 10px;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 2px;
+      }
+
+      .header p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
+      /* ── Cards ─────────────────────────────────────── */
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid #e8e6f0;
+      }
+
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 16px;
+      }
+
+      /* ── Stat Grid ─────────────────────────────────── */
+      .stat-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .stat-box {
+        background: #f0edfe;
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+      }
+
+      .stat-num {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .stat-note {
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      /* ── Buttons ───────────────────────────────────── */
+      .btn-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 8px;
+        font-family: "Cairo", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #fff;
+        background: var(--primary);
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        line-height: 1.4;
+      }
+
+      .btn:hover:not(:disabled) {
+        background: var(--primary-hover);
+      }
+
+      .btn:active:not(:disabled) {
+        transform: scale(0.97);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+      }
+
+      .btn-outline:hover:not(:disabled) {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .btn-danger {
+        background: var(--err);
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        background: #dc2626;
+      }
+
+      .btn-full {
+        grid-column: 1 / -1;
+      }
+
+      .btn-sm {
+        padding: 9px 14px;
+        font-size: 0.82rem;
+      }
+
+      /* ── Spinner Overlay ───────────────────────────── */
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        background: rgba(255, 255, 255, 0.6);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .overlay.active {
+        display: flex;
+      }
+
+      .spin-ring {
+        width: 44px;
+        height: 44px;
+        border: 4px solid #e8e6f0;
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Toast ─────────────────────────────────────── */
+      .toast-wrap {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .toast {
+        pointer-events: auto;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-family: "Cairo", sans-serif;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #fff;
+        background: #1e1b2e;
+        text-align: right;
+        animation: tIn 0.3s ease, tOut 0.3s ease 3.5s forwards;
+      }
+
+      .toast-ok {
+        border-right: 4px solid var(--ok);
+      }
+
+      .toast-err {
+        border-right: 4px solid var(--err);
+      }
+
+      .toast-info {
+        border-right: 4px solid var(--primary);
+      }
+
+      @keyframes tIn {
+        from {
+          opacity: 0;
+          transform: translateY(-14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes tOut {
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+
+      /* ── Logs List ─────────────────────────────────── */
+      .log-list {
+        list-style: none;
+        max-height: 340px;
+        overflow-y: auto;
+        padding: 0;
+      }
+
+      .log-item {
+        padding: 8px 10px;
+        border-bottom: 1px solid #f0eff5;
+        font-size: 0.82rem;
+        line-height: 1.6;
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .log-item:last-child {
+        border-bottom: none;
+      }
+
+      .log-badge {
+        flex-shrink: 0;
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .log-badge-ok {
+        background: var(--ok);
+      }
+
+      .log-badge-err {
+        background: var(--err);
+      }
+
+      .log-detail {
+        flex: 1;
+        color: var(--text);
+        word-break: break-word;
+      }
+
+      .log-meta {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .log-empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 20px;
+        font-size: 0.85rem;
+      }
+
+      /* ── Responsive ────────────────────────────────── */
+      @media (max-width: 480px) {
+        .btn-grid {
+          grid-template-columns: 1fr;
+        }
+        .stat-num {
+          font-size: 1.6rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Toast Container -->
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <!-- Spinner Overlay -->
+    <div class="overlay" id="overlay">
+      <div class="spin-ring"></div>
+    </div>
+
+    <!-- App -->
+    <div class="app">
+      <!-- ═══ Header ═══ -->
+      <div class="header">
+        <!--
+          ▼ استبدل src برابط logo.png العام ▼
+          مثال Drive:
+          https://drive.google.com/uc?export=view&id=FILE_ID
+        -->
+        <img
+          src="LOGO_URL_HERE"
+          alt="سلعة"
+          onerror="this.style.display='none'"
+        />
+        <h1>سلعة</h1>
+        <p>موردك الأول في الدواجن</p>
+      </div>
+
+      <!-- ═══ Stats ═══ -->
+      <div class="card">
+        <div class="card-title">📊 الإحصاءات</div>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num" id="sSent">—</div>
+            <div class="stat-label">Sent to Courier</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="sOrder">—</div>
+            <div class="stat-label">لديها OrderId</div>
+          </div>
+        </div>
+        <div class="stat-note" id="sNote">
+          إجمالي الصفوف: —
+        </div>
+        <div style="text-align: center; margin-top: 10px">
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="refreshStats()"
+          >
+            🔄 تحديث الإحصاءات
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══ Operations ═══ -->
+      <div class="card">
+        <div class="card-title">⚡ العمليات</div>
+        <div class="btn-grid">
+          <button
+            class="btn"
+            onclick="runOp('opFetchUpload','رفع طلبات Shipday')"
+          >
+            📥 رفع طلبات Shipday (غدًا)
+          </button>
+          <button
+            class="btn"
+            onclick="runOp('opUpdateExisting','تحديث طلبات Shipday')"
+          >
+            🔄 تحديث طلبات Shipday
+          </button>
+          <button
+            class="btn"
+            onclick="runOp('opDistributeSweep','توزيع Sweep')"
+          >
+            🧹 توزيع Sweep
+          </button>
+          <button
+            class="btn"
+            onclick="runOp('opDistributeToMain','توزيع إلى Main')"
+          >
+            📤 توزيع إلى Main
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══ Triggers ═══ -->
+      <div class="card">
+        <div class="card-title">⏰ التريقرات</div>
+        <div class="btn-grid">
+          <button
+            class="btn"
+            onclick="runOp('opSetupTrigger','إنشاء Trigger')"
+          >
+            ➕ إنشاء Trigger / 5 دقائق
+          </button>
+          <button
+            class="btn btn-danger"
+            onclick="runOp('opDeleteTriggers','حذف Triggers')"
+          >
+            🗑 حذف جميع Triggers
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══ Logs ═══ -->
+      <div class="card">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+          "
+        >
+          <div class="card-title" style="margin: 0">
+            📜 آخر العمليات
+          </div>
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="refreshLogs()"
+          >
+            تحديث
+          </button>
+        </div>
+        <ul class="log-list" id="logList">
+          <li class="log-empty">جارٍ التحميل…</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      /* ═══════════════════════════════════════════════
+         Client — Vanilla JS
+         ═══════════════════════════════════════════════ */
+
+      // ── Init ──────────────────────────────────────
+      (function () {
+        refreshStats();
+        refreshLogs();
+      })();
+
+      // ── Toast ─────────────────────────────────────
+      function toast(msg, type) {
+        var wrap = document.getElementById("toastWrap");
+        var el = document.createElement("div");
+        el.className = "toast toast-" + (type || "info");
+        el.textContent = msg;
+        wrap.appendChild(el);
+        setTimeout(function () {
+          if (el.parentNode) el.remove();
+        }, 4200);
+      }
+
+      // ── Spinner ───────────────────────────────────
+      var _busy = false;
+
+      function showSpinner() {
+        _busy = true;
+        document
+          .getElementById("overlay")
+          .classList.add("active");
+        setAllBtns(true);
+      }
+
+      function hideSpinner() {
+        _busy = false;
+        document
+          .getElementById("overlay")
+          .classList.remove("active");
+        setAllBtns(false);
+      }
+
+      function setAllBtns(disabled) {
+        var btns = document.querySelectorAll(".btn");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].disabled = disabled;
+        }
+      }
+
+      // ── Run Operation ─────────────────────────────
+      function runOp(fnName, label) {
+        if (_busy) return;
+        showSpinner();
+        google.script.run
+          .withSuccessHandler(function (res) {
+            hideSpinner();
+            if (res && res.ok) {
+              toast(
+                "✅ " +
+                  label +
+                  " — " +
+                  fmtDur(res.duration),
+                "ok"
+              );
+            } else {
+              toast(
+                "❌ " +
+                  label +
+                  ": " +
+                  (res ? res.message : "خطأ"),
+                "err"
+              );
+            }
+            refreshStats();
+            refreshLogs();
+          })
+          .withFailureHandler(function (err) {
+            hideSpinner();
+            toast("❌ " + label + ": " + err.message, "err");
+          })
+          [fnName]();
+      }
+
+      // ── Stats ─────────────────────────────────────
+      function refreshStats() {
+        google.script.run
+          .withSuccessHandler(function (s) {
+            if (!s) return;
+            txt("sSent", s.sentToCourier);
+            txt("sOrder", s.hasOrderId);
+            txt(
+              "sNote",
+              "إجمالي الصفوف: " + (s.totalRows || 0)
+            );
+          })
+          .withFailureHandler(function () {})
+          .getStats();
+      }
+
+      // ── Logs ──────────────────────────────────────
+      function refreshLogs() {
+        google.script.run
+          .withSuccessHandler(function (res) {
+            renderLogs(res && res.logs ? res.logs : []);
+          })
+          .withFailureHandler(function () {
+            renderLogs([]);
+          })
+          .getRecentLogs(12);
+      }
+
+      function renderLogs(logs) {
+        var ul = document.getElementById("logList");
+        if (!logs.length) {
+          ul.innerHTML =
+            '<li class="log-empty">لا توجد عمليات بعد</li>';
+          return;
+        }
+        var html = "";
+        for (var i = 0; i < logs.length; i++) {
+          var l = logs[i];
+          var isOk = l.status === "OK";
+          html +=
+            '<li class="log-item">' +
+            '<span class="log-badge ' +
+            (isOk ? "log-badge-ok" : "log-badge-err") +
+            '">' +
+            esc(l.status) +
+            "</span>" +
+            '<div class="log-detail">' +
+            "<strong>" +
+            esc(l.task) +
+            "</strong>" +
+            (l.details && l.details !== "OK"
+              ? " — " + esc(trunc(l.details, 120))
+              : "") +
+            '<div class="log-meta">' +
+            fmtTs(l.timestamp) +
+            " · " +
+            fmtDur(l.duration) +
+            "</div>" +
+            "</div>" +
+            "</li>";
+        }
+        ul.innerHTML = html;
+      }
+
+      // ── Helpers ───────────────────────────────────
+      function txt(id, v) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = v !== undefined ? v : "—";
+      }
+
+      function esc(s) {
+        var d = document.createElement("div");
+        d.appendChild(document.createTextNode(s || ""));
+        return d.innerHTML;
+      }
+
+      function trunc(s, max) {
+        s = String(s || "");
+        return s.length > max
+          ? s.slice(0, max) + "…"
+          : s;
+      }
+
+      function fmtDur(ms) {
+        if (!ms && ms !== 0) return "";
+        return ms >= 1000
+          ? (ms / 1000).toFixed(1) + " ث"
+          : ms + " ملث";
+      }
+
+      function fmtTs(iso) {
+        if (!iso) return "";
+        try {
+          var d = new Date(iso);
+          return d.toLocaleString("ar-SA", {
+            timeZone: "Asia/Riyadh",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch (_) {
+          return String(iso).slice(0, 19);
+        }
+      }
+    </script>
+  </body>
+</html>
