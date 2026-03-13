@@ -7,7 +7,10 @@
       content="width=device-width, initial-scale=1"
     />
     <title>سلعة — لوحة التحكم</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
     <link
       rel="preconnect"
       href="https://fonts.gstatic.com"
@@ -18,7 +21,6 @@
       rel="stylesheet"
     />
     <style>
-      /* ── Reset ─────────────────────────────────────── */
       *,
       *::before,
       *::after {
@@ -27,7 +29,6 @@
         padding: 0;
       }
 
-      /* ── Variables ─────────────────────────────────── */
       :root {
         --primary: #745ff2;
         --primary-hover: #6350d9;
@@ -40,7 +41,6 @@
         --radius: 10px;
       }
 
-      /* ── Body & Pattern ────────────────────────────── */
       body {
         font-family: "Cairo", sans-serif;
         font-weight: 400;
@@ -56,19 +56,13 @@
         position: fixed;
         inset: 0;
         z-index: -1;
-        /*
-          ▼ استبدل الرابط أدناه برابط pattern.png العام ▼
-          مثال Drive:
-          url('https://drive.google.com/uc?export=view&id=FILE_ID')
-        */
-        background-image: url("https://drive.google.com/uc?export=view&id=1efCqcKGyq15pxV-J2tUBLHH6Q4YaK_H2");
+        background-image: url("PATTERN_URL_HERE");
         background-repeat: repeat;
         background-size: 180px 180px;
         opacity: 0.08;
         pointer-events: none;
       }
 
-      /* ── Fade-in ───────────────────────────────────── */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -81,13 +75,13 @@
       }
 
       .app {
-        max-width: 680px;
+        max-width: 720px;
         margin: 0 auto;
         padding: 24px 16px 48px;
         animation: fadeIn 0.5s ease both;
       }
 
-      /* ── Header ────────────────────────────────────── */
+      /* ── Header ────────────────────────────────── */
       .header {
         text-align: center;
         margin-bottom: 28px;
@@ -114,7 +108,7 @@
         font-weight: 400;
       }
 
-      /* ── Cards ─────────────────────────────────────── */
+      /* ── Cards ─────────────────────────────────── */
       .card {
         background: var(--card);
         border-radius: var(--radius);
@@ -130,7 +124,7 @@
         margin-bottom: 16px;
       }
 
-      /* ── Stat Grid ─────────────────────────────────── */
+      /* ── Stat Grid ─────────────────────────────── */
       .stat-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -165,7 +159,7 @@
         color: var(--muted);
       }
 
-      /* ── Buttons ───────────────────────────────────── */
+      /* ── Buttons ───────────────────────────────── */
       .btn-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -231,7 +225,7 @@
         font-size: 0.82rem;
       }
 
-      /* ── Spinner Overlay ───────────────────────────── */
+      /* ── Overlay / Spinner ─────────────────────── */
       .overlay {
         display: none;
         position: fixed;
@@ -261,7 +255,7 @@
         }
       }
 
-      /* ── Toast ─────────────────────────────────────── */
+      /* ── Toast ─────────────────────────────────── */
       .toast-wrap {
         position: fixed;
         top: 14px;
@@ -286,7 +280,8 @@
         color: #fff;
         background: #1e1b2e;
         text-align: right;
-        animation: tIn 0.3s ease, tOut 0.3s ease 3.5s forwards;
+        animation: tIn 0.3s ease,
+          tOut 0.3s ease 3.5s forwards;
       }
 
       .toast-ok {
@@ -319,7 +314,59 @@
         }
       }
 
-      /* ── Logs List ─────────────────────────────────── */
+      /* ── Distribution Table ────────────────────── */
+      .dist-table-wrap {
+        overflow-x: auto;
+        margin-top: 4px;
+      }
+
+      .dist-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        line-height: 1.6;
+      }
+
+      .dist-table th {
+        background: var(--primary);
+        color: #fff;
+        font-weight: 700;
+        padding: 8px 12px;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .dist-table th:first-child {
+        border-radius: 0 6px 0 0;
+      }
+
+      .dist-table th:last-child {
+        border-radius: 6px 0 0 0;
+      }
+
+      .dist-table td {
+        padding: 8px 12px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-weight: 600;
+      }
+
+      .dist-table tr:nth-child(even) td {
+        background: #faf9ff;
+      }
+
+      .dist-table tr:hover td {
+        background: #f0edfe;
+      }
+
+      .dist-empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 16px;
+        font-size: 0.85rem;
+      }
+
+      /* ── Logs ──────────────────────────────────── */
       .log-list {
         list-style: none;
         max-height: 340px;
@@ -378,7 +425,7 @@
         font-size: 0.85rem;
       }
 
-      /* ── Responsive ────────────────────────────────── */
+      /* ── Responsive ────────────────────────────── */
       @media (max-width: 480px) {
         .btn-grid {
           grid-template-columns: 1fr;
@@ -391,25 +438,17 @@
   </head>
 
   <body>
-    <!-- Toast Container -->
     <div class="toast-wrap" id="toastWrap"></div>
 
-    <!-- Spinner Overlay -->
     <div class="overlay" id="overlay">
       <div class="spin-ring"></div>
     </div>
 
-    <!-- App -->
     <div class="app">
       <!-- ═══ Header ═══ -->
       <div class="header">
-        <!--
-          ▼ استبدل src برابط logo.png العام ▼
-          مثال Drive:
-          https://drive.google.com/uc?export=view&id=FILE_ID
-        -->
         <img
-          src="https://drive.google.com/uc?export=view&id=1fIjIMDUYLHfH4n88BRC03R3ow5laaeBK"
+          src="LOGO_URL_HERE"
           alt="سلعة"
           onerror="this.style.display='none'"
         />
@@ -419,7 +458,7 @@
 
       <!-- ═══ Stats ═══ -->
       <div class="card">
-        <div class="card-title"> الإحصاءات</div>
+        <div class="card-title">📊 الإحصاءات</div>
         <div class="stat-row">
           <div class="stat-box">
             <div class="stat-num" id="sSent">—</div>
@@ -438,45 +477,76 @@
             class="btn btn-outline btn-sm"
             onclick="refreshStats()"
           >
-             تحديث الإحصاءات
+            🔄 تحديث الإحصاءات
           </button>
+        </div>
+      </div>
+
+      <!-- ═══ Distribution Table ═══ -->
+      <div class="card">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+          "
+        >
+          <div class="card-title" style="margin: 0">
+            📦 نتائج التوزيع
+          </div>
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="refreshDistTable()"
+          >
+            🔄
+          </button>
+        </div>
+        <div class="dist-table-wrap" id="distWrap">
+          <div class="dist-empty">جارٍ التحميل…</div>
         </div>
       </div>
 
       <!-- ═══ Operations ═══ -->
       <div class="card">
-        <div class="card-title"> العمليات</div>
+        <div class="card-title">⚡ العمليات</div>
         <div class="btn-grid">
           <button
             class="btn"
             onclick="runOp('opFetchUpload','رفع طلبات Shipday')"
           >
-             رفع طلبات Shipday (غدًا)
+            📥 رفع طلبات Shipday (غدًا)
           </button>
           <button
             class="btn"
             onclick="runOp('opUpdateExisting','تحديث طلبات Shipday')"
           >
-             تحديث طلبات Shipday
+            🔄 تحديث طلبات Shipday
           </button>
           <button
             class="btn"
             onclick="runOp('opDistributeSweep','توزيع Sweep')"
           >
-             توزيع Sweep
+            🧹 توزيع Sweep
           </button>
           <button
             class="btn"
             onclick="runOp('opDistributeToMain','توزيع إلى Main')"
           >
-             توزيع إلى Main
+            📤 توزيع إلى Main
+          </button>
+          <button
+            class="btn btn-full"
+            onclick="runOp('opFillMissingIds','تعبئة OrderIds الناقصة')"
+          >
+            🔑 تعبئة OrderIds الناقصة
           </button>
         </div>
       </div>
 
       <!-- ═══ Triggers ═══ -->
       <div class="card">
-        <div class="card-title"> التريقرات</div>
+        <div class="card-title">⏰ التريقرات</div>
         <div class="btn-grid">
           <button
             class="btn"
@@ -488,7 +558,7 @@
             class="btn btn-danger"
             onclick="runOp('opDeleteTriggers','حذف Triggers')"
           >
-             حذف جميع Triggers
+            🗑 حذف جميع Triggers
           </button>
         </div>
       </div>
@@ -504,7 +574,7 @@
           "
         >
           <div class="card-title" style="margin: 0">
-             آخر العمليات
+            📜 آخر العمليات
           </div>
           <button
             class="btn btn-outline btn-sm"
@@ -524,17 +594,18 @@
          Client — Vanilla JS
          ═══════════════════════════════════════════════ */
 
-      // ── Init ──────────────────────────────────────
       (function () {
         refreshStats();
+        refreshDistTable();
         refreshLogs();
       })();
 
-      // ── Toast ─────────────────────────────────────
+      // ── Toast ───────────────────────────────────
       function toast(msg, type) {
         var wrap = document.getElementById("toastWrap");
         var el = document.createElement("div");
-        el.className = "toast toast-" + (type || "info");
+        el.className =
+          "toast toast-" + (type || "info");
         el.textContent = msg;
         wrap.appendChild(el);
         setTimeout(function () {
@@ -542,7 +613,7 @@
         }, 4200);
       }
 
-      // ── Spinner ───────────────────────────────────
+      // ── Spinner ─────────────────────────────────
       var _busy = false;
 
       function showSpinner() {
@@ -568,7 +639,7 @@
         }
       }
 
-      // ── Run Operation ─────────────────────────────
+      // ── Run Operation ───────────────────────────
       function runOp(fnName, label) {
         if (_busy) return;
         showSpinner();
@@ -577,15 +648,15 @@
             hideSpinner();
             if (res && res.ok) {
               toast(
-                "✅ " +
+                "\u2705 " +
                   label +
-                  " — " +
+                  " \u2014 " +
                   fmtDur(res.duration),
                 "ok"
               );
             } else {
               toast(
-                "❌ " +
+                "\u274C " +
                   label +
                   ": " +
                   (res ? res.message : "خطأ"),
@@ -593,16 +664,20 @@
               );
             }
             refreshStats();
+            refreshDistTable();
             refreshLogs();
           })
           .withFailureHandler(function (err) {
             hideSpinner();
-            toast("❌ " + label + ": " + err.message, "err");
+            toast(
+              "\u274C " + label + ": " + err.message,
+              "err"
+            );
           })
           [fnName]();
       }
 
-      // ── Stats ─────────────────────────────────────
+      // ── Stats ───────────────────────────────────
       function refreshStats() {
         google.script.run
           .withSuccessHandler(function (s) {
@@ -611,18 +686,86 @@
             txt("sOrder", s.hasOrderId);
             txt(
               "sNote",
-              "إجمالي الصفوف: " + (s.totalRows || 0)
+              "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0635\u0641\u0648\u0641: " +
+                (s.totalRows || 0)
             );
           })
           .withFailureHandler(function () {})
           .getStats();
       }
 
-      // ── Logs ──────────────────────────────────────
+      // ── Distribution Table ──────────────────────
+      function refreshDistTable() {
+        google.script.run
+          .withSuccessHandler(function (res) {
+            renderDistTable(res);
+          })
+          .withFailureHandler(function (err) {
+            document.getElementById(
+              "distWrap"
+            ).innerHTML =
+              '<div class="dist-empty">\u274C ' +
+              esc(err.message) +
+              "</div>";
+          })
+          .getDistributionTable();
+      }
+
+      function renderDistTable(res) {
+        var wrap = document.getElementById("distWrap");
+
+        if (
+          !res ||
+          !res.ok ||
+          !res.headers ||
+          !res.headers.length
+        ) {
+          wrap.innerHTML =
+            '<div class="dist-empty">' +
+            (res && res.message
+              ? esc(res.message)
+              : "لا توجد بيانات") +
+            "</div>";
+          return;
+        }
+
+        var h = res.headers;
+        var r = res.rows;
+
+        var html = '<table class="dist-table"><thead><tr>';
+        for (var i = 0; i < h.length; i++) {
+          html += "<th>" + esc(h[i]) + "</th>";
+        }
+        html += "</tr></thead><tbody>";
+
+        if (!r.length) {
+          html +=
+            '<tr><td colspan="' +
+            h.length +
+            '" style="text-align:center;color:#999;padding:14px">' +
+            "لا توجد صفوف</td></tr>";
+        } else {
+          for (var j = 0; j < r.length; j++) {
+            html += "<tr>";
+            for (var k = 0; k < h.length; k++) {
+              var val = r[j][h[k]] || "";
+              html += "<td>" + esc(val) + "</td>";
+            }
+            html += "</tr>";
+          }
+        }
+
+        html += "</tbody></table>";
+        wrap.innerHTML = html;
+      }
+
+      // ── Logs ────────────────────────────────────
       function refreshLogs() {
         google.script.run
           .withSuccessHandler(function (res) {
-            renderLogs(res && res.logs ? res.logs : []);
+            renderLogs(
+              res && res.logs ? res.logs : []
+            );
           })
           .withFailureHandler(function () {
             renderLogs([]);
@@ -634,7 +777,7 @@
         var ul = document.getElementById("logList");
         if (!logs.length) {
           ul.innerHTML =
-            '<li class="log-empty">لا توجد عمليات بعد</li>';
+            '<li class="log-empty">\u0644\u0627 \u062A\u0648\u062C\u062F \u0639\u0645\u0644\u064A\u0627\u062A \u0628\u0639\u062F</li>';
           return;
         }
         var html = "";
@@ -653,43 +796,45 @@
             esc(l.task) +
             "</strong>" +
             (l.details && l.details !== "OK"
-              ? " — " + esc(trunc(l.details, 120))
+              ? " \u2014 " +
+                esc(trunc(l.details, 120))
               : "") +
             '<div class="log-meta">' +
             fmtTs(l.timestamp) +
-            " · " +
+            " \u00B7 " +
             fmtDur(l.duration) +
-            "</div>" +
-            "</div>" +
-            "</li>";
+            "</div></div></li>";
         }
         ul.innerHTML = html;
       }
 
-      // ── Helpers ───────────────────────────────────
+      // ── Helpers ─────────────────────────────────
       function txt(id, v) {
         var el = document.getElementById(id);
-        if (el) el.textContent = v !== undefined ? v : "—";
+        if (el)
+          el.textContent = v !== undefined ? v : "\u2014";
       }
 
       function esc(s) {
         var d = document.createElement("div");
-        d.appendChild(document.createTextNode(s || ""));
+        d.appendChild(
+          document.createTextNode(s || "")
+        );
         return d.innerHTML;
       }
 
       function trunc(s, max) {
         s = String(s || "");
         return s.length > max
-          ? s.slice(0, max) + "…"
+          ? s.slice(0, max) + "\u2026"
           : s;
       }
 
       function fmtDur(ms) {
         if (!ms && ms !== 0) return "";
         return ms >= 1000
-          ? (ms / 1000).toFixed(1) + " ث"
-          : ms + " ملث";
+          ? (ms / 1000).toFixed(1) + " \u062B"
+          : ms + " \u0645\u0644\u062B";
       }
 
       function fmtTs(iso) {
