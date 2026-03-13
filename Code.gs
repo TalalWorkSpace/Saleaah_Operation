@@ -144,6 +144,76 @@ function opDeleteTriggers() {
     deleteAllUpdateTriggers
   );
 }
+/* ═══════════════════════════════════════════════════════════
+   إضافة: fillMissingOrderIds + جدول Distribution_Result
+   ═══════════════════════════════════════════════════════════ */
+
+// ─── Wrapper لـ fillMissingOrderIds ──────────────────────
+
+function opFillMissingIds() {
+  return _runWrapped(
+    "Fill Missing OrderIds",
+    fillMissingOrderIds
+  );
+}
+
+// ─── جلب جدول Distribution_Result J1:O4 ────────────────
+
+function getDistributionTable() {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = ss.getSheetByName("Distribution_Result");
+    if (!sh) {
+      return {
+        ok: false,
+        message: "ورقة Distribution_Result غير موجودة",
+        headers: [],
+        rows: [],
+      };
+    }
+
+    var range = sh.getRange("J1:O4");
+    var values = range.getValues();
+
+    if (!values.length) {
+      return { ok: true, headers: [], rows: [] };
+    }
+
+    // الصف الأول ترويسات
+    var headers = values[0].map(function (h) {
+      return String(h);
+    });
+
+    // باقي الصفوف بيانات
+    var rows = [];
+    for (var i = 1; i < values.length; i++) {
+      var row = {};
+      for (var j = 0; j < headers.length; j++) {
+        var val = values[i][j];
+        row[headers[j]] =
+          val instanceof Date
+            ? val.toISOString()
+            : val !== null && val !== undefined
+              ? String(val)
+              : "";
+      }
+      rows.push(row);
+    }
+
+    return {
+      ok: true,
+      headers: headers,
+      rows: rows,
+    };
+  } catch (e) {
+    return {
+      ok: false,
+      message: e.message,
+      headers: [],
+      rows: [],
+    };
+  }
+}
 
 // ─── الإحصاءات ──────────────────────────────────────────
 
