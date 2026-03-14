@@ -396,7 +396,7 @@
           class="conn-status loading"
           id="connStatus"
         >
-          ⏳ جارٍ الاتصال...
+           جارٍ الاتصال...
         </div>
       </div>
 
@@ -421,7 +421,7 @@
 
       <div class="section">
         <div class="section-title">
-          <span>📊</span> نتائج التوزيع
+          <span></span> نتائج التوزيع
         </div>
         <div id="distTableWrap">
           <p
@@ -438,64 +438,64 @@
 
       <div class="section">
         <div class="section-title">
-          <span>⚡</span> العمليات
+          <span></span> العمليات
         </div>
         <div class="btn-grid">
           <button
             class="btn"
             onclick="run('opFetchUpload','رفع طلبات Shipday')"
           >
-            📥 رفع طلبات Shipday (غدًا)
+             رفع طلبات Shipday (غدًا)
           </button>
           <button
             class="btn"
             onclick="run('opUpdateExisting','تحديث طلبات Shipday')"
           >
-            🔄 تحديث طلبات Shipday
+             تحديث طلبات Shipday
           </button>
           <button
             class="btn"
             onclick="run('opDistributeSweep','توزيع Sweep')"
           >
-            🧹 توزيع Sweep
+             توزيع Sweep
           </button>
           <button
             class="btn"
             onclick="run('opDistributeToMain','توزيع إلى Main')"
           >
-            📤 توزيع إلى Main
+             توزيع إلى Main
           </button>
           <button
             class="btn full"
             onclick="run('opFillMissingIds','تعبئة OrderIds')"
           >
-            🔑 تعبئة OrderIds الناقصة
+             تعبئة OrderIds الناقصة
           </button>
         </div>
       </div>
 
       <div class="section">
         <div class="section-title">
-          <span>⏰</span> التريقرات
+          <span></span> التريقرات
         </div>
         <div class="btn-grid">
           <button
             class="btn outline"
             onclick="run('opSetupTrigger','إنشاء Trigger')"
           >
-            ➕ إنشاء Trigger / 5 د
+             إنشاء Trigger / 5 د
           </button>
           <button
             class="btn danger"
             onclick="run('opDeleteTriggers','حذف Triggers')"
           >
-            🗑 حذف Triggers
+             حذف Triggers
           </button>
           <button
             class="btn outline full"
             onclick="loadTriggers()"
           >
-            👁 عرض التريقرات الحالية
+             عرض التريقرات الحالية
           </button>
         </div>
         <div class="trigger-list" id="triggerList">
@@ -504,7 +504,7 @@
 
       <div class="section">
         <div class="section-title">
-          <span>📋</span> سجل آخر العمليات
+          <span></span> سجل آخر العمليات
         </div>
         <div class="logs-wrapper" id="logsWrap">
           <p
@@ -641,7 +641,7 @@
       function testConnection() {
         var el = $('connStatus');
         el.className = 'conn-status loading';
-        el.textContent = '⏳ جارٍ الاتصال...';
+        el.textContent = ' جارٍ الاتصال...';
 
         if (
           !API ||
@@ -649,7 +649,7 @@
         ) {
           el.className = 'conn-status err';
           el.textContent =
-            '❌ لم يتم تعيين رابط API — عدّل API في الكود';
+            ' لم يتم تعيين رابط API — عدّل API في الكود';
           return;
         }
 
@@ -657,7 +657,7 @@
           .then(function (r) {
             if (r && r.ok) {
               el.className = 'conn-status ok';
-              el.textContent = '✅ متصل بنجاح';
+              el.textContent = ' متصل بنجاح';
             } else {
               el.className = 'conn-status err';
               el.textContent =
@@ -860,7 +860,7 @@
           .then(function (r) {
             hideOverlay();
             if (r && r.ok) {
-              toast('تم مسح السجل ✅', 'success');
+              toast('تم مسح السجل ', 'success');
               loadLogs();
             } else {
               toast(
