@@ -1,68 +1,63 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1"
+      content="width=device-width, initial-scale=1.0"
     />
-    <title>سلعة — لوحة التحكم</title>
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
+    <title>سلعة — لوحة العمليات</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
       :root {
-        --primary: #745ff2;
-        --primary-hover: #6350d9;
-        --bg: #f5f4fa;
-        --card: #ffffff;
-        --text: #1e1b2e;
-        --muted: #71717a;
+        --brand: #745ff2;
+        --brand-light: #ece9fe;
+        --brand-dark: #5a45d6;
         --ok: #22c55e;
         --err: #ef4444;
-        --radius: 10px;
+        --bg: #f8f7fc;
+        --card: #ffffff;
+        --text: #1e1e2e;
+        --muted: #71717a;
+        --radius: 14px;
+        --shadow: 0 2px 12px rgba(116, 95, 242, 0.08);
       }
-
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
-        font-family: "Cairo", sans-serif;
+        font-family: 'Cairo', sans-serif;
         font-weight: 400;
-        font-size: 1rem;
-        line-height: 1.8;
-        color: var(--text);
         background: var(--bg);
+        color: var(--text);
         min-height: 100vh;
+        direction: rtl;
+        line-height: 1.6;
+        position: relative;
       }
-
       body::before {
-        content: "";
+        content: '';
         position: fixed;
         inset: 0;
-        z-index: -1;
-        background-image: url("PATTERN_URL_HERE");
-        background-repeat: repeat;
-        background-size: 180px 180px;
+        background-image: url('PATTERN_URL_HERE');
+        background-size: 180px;
         opacity: 0.08;
         pointer-events: none;
+        z-index: 0;
       }
-
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 24px 18px 60px;
+        animation: fadeIn 0.5s ease;
+      }
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -73,785 +68,692 @@
           transform: translateY(0);
         }
       }
-
-      .app {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 24px 16px 48px;
-        animation: fadeIn 0.5s ease both;
-      }
-
-      /* ── Header ────────────────────────────────── */
       .header {
         text-align: center;
         margin-bottom: 28px;
       }
-
       .header img {
-        width: 68px;
-        height: 68px;
-        border-radius: 14px;
-        display: block;
-        margin: 0 auto 10px;
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        object-fit: contain;
+        margin-bottom: 8px;
       }
-
       .header h1 {
-        font-size: 1.5rem;
+        font-size: 28px;
         font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 2px;
+        color: var(--brand);
       }
-
       .header p {
-        font-size: 0.88rem;
+        font-size: 14px;
         color: var(--muted);
-        font-weight: 400;
       }
-
-      /* ── Cards ─────────────────────────────────── */
-      .card {
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(160px, 1fr)
+        );
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      .stat-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 18px 16px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        border-top: 3px solid var(--brand);
+      }
+      .stat-card .num {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--brand);
+        line-height: 1.1;
+      }
+      .stat-card .lbl {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+        font-weight: 600;
+      }
+      .stat-card.time-card {
+        border-top-color: var(--muted);
+      }
+      .stat-card.time-card .num {
+        font-size: 16px;
+        color: var(--text);
+      }
+      .section {
         background: var(--card);
         border-radius: var(--radius);
         padding: 20px;
-        margin-bottom: 16px;
-        border: 1px solid #e8e6f0;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
       }
-
-      .card-title {
-        font-size: 1rem;
+      .section-title {
+        font-size: 16px;
         font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 16px;
+        color: var(--brand);
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-
-      /* ── Stat Grid ─────────────────────────────── */
-      .stat-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 12px;
+      .section-title span {
+        font-size: 20px;
       }
-
-      .stat-box {
-        background: #f0edfe;
-        border-radius: 8px;
-        padding: 16px;
-        text-align: center;
+      .dist-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 8px;
       }
-
-      .stat-num {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-        line-height: 1.2;
-      }
-
-      .stat-label {
-        font-size: 0.78rem;
+      .dist-table th {
+        background: var(--brand);
+        color: #fff;
         font-weight: 600;
-        color: var(--muted);
-        margin-top: 4px;
-      }
-
-      .stat-note {
+        padding: 10px 8px;
         text-align: center;
-        font-size: 0.75rem;
-        color: var(--muted);
       }
-
-      /* ── Buttons ───────────────────────────────── */
+      .dist-table th:first-child {
+        border-radius: 0 8px 0 0;
+      }
+      .dist-table th:last-child {
+        border-radius: 8px 0 0 0;
+      }
+      .dist-table td {
+        padding: 9px 8px;
+        text-align: center;
+        border-bottom: 1px solid #f0eef8;
+      }
+      .dist-table tr:hover td {
+        background: var(--brand-light);
+      }
       .btn-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
       }
-
       .btn {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 12px 16px;
+        padding: 12px 10px;
         border: none;
-        border-radius: 8px;
-        font-family: "Cairo", sans-serif;
-        font-size: 0.88rem;
+        border-radius: 10px;
+        font-family: 'Cairo', sans-serif;
         font-weight: 600;
-        color: #fff;
-        background: var(--primary);
+        font-size: 13px;
         cursor: pointer;
-        transition: background 0.2s, transform 0.1s;
-        line-height: 1.4;
+        transition: all 0.2s ease;
+        background: var(--brand);
+        color: #fff;
       }
-
-      .btn:hover:not(:disabled) {
-        background: var(--primary-hover);
+      .btn:hover {
+        background: var(--brand-dark);
+        transform: translateY(-1px);
       }
-
-      .btn:active:not(:disabled) {
+      .btn:active {
         transform: scale(0.97);
       }
-
       .btn:disabled {
-        opacity: 0.5;
+        opacity: 0.55;
         cursor: not-allowed;
+        transform: none;
       }
-
-      .btn-outline {
+      .btn.outline {
         background: transparent;
-        color: var(--primary);
-        border: 2px solid var(--primary);
+        color: var(--brand);
+        border: 2px solid var(--brand);
       }
-
-      .btn-outline:hover:not(:disabled) {
-        background: var(--primary);
-        color: #fff;
+      .btn.outline:hover {
+        background: var(--brand-light);
       }
-
-      .btn-danger {
+      .btn.danger {
         background: var(--err);
       }
-
-      .btn-danger:hover:not(:disabled) {
+      .btn.danger:hover {
         background: #dc2626;
       }
-
-      .btn-full {
+      .btn.full {
         grid-column: 1 / -1;
       }
-
-      .btn-sm {
-        padding: 9px 14px;
-        font-size: 0.82rem;
+      .trigger-list {
+        margin-top: 12px;
+        font-size: 12px;
+        background: #f9f9fb;
+        border-radius: 8px;
+        padding: 10px 12px;
+        max-height: 150px;
+        overflow-y: auto;
+        display: none;
       }
-
-      /* ── Overlay / Spinner ─────────────────────── */
+      .trigger-list.show {
+        display: block;
+      }
+      .trigger-item {
+        padding: 4px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+      }
+      .trigger-item:last-child {
+        border-bottom: none;
+      }
+      .logs-wrapper {
+        max-height: 320px;
+        overflow-y: auto;
+        margin-top: 8px;
+      }
+      .log-row {
+        display: grid;
+        grid-template-columns: 26px 1fr auto;
+        gap: 8px;
+        align-items: start;
+        padding: 8px 4px;
+        border-bottom: 1px solid #f0eef8;
+        font-size: 12px;
+      }
+      .log-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-top: 5px;
+        justify-self: center;
+      }
+      .log-dot.ok {
+        background: var(--ok);
+      }
+      .log-dot.err {
+        background: var(--err);
+      }
+      .log-info strong {
+        font-weight: 600;
+      }
+      .log-info .details {
+        color: var(--muted);
+        display: block;
+        word-break: break-word;
+      }
+      .log-meta {
+        text-align: left;
+        color: var(--muted);
+        white-space: nowrap;
+        font-size: 11px;
+      }
+      .logs-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .logs-actions .btn {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
       .overlay {
         display: none;
         position: fixed;
         inset: 0;
-        z-index: 9000;
-        background: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 999;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
+        gap: 14px;
       }
-
-      .overlay.active {
+      .overlay.show {
         display: flex;
       }
-
-      .spin-ring {
-        width: 44px;
-        height: 44px;
-        border: 4px solid #e8e6f0;
-        border-top-color: var(--primary);
+      .spinner {
+        width: 46px;
+        height: 46px;
+        border: 4px solid var(--brand-light);
+        border-top-color: var(--brand);
         border-radius: 50%;
         animation: spin 0.7s linear infinite;
       }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
-
-      /* ── Toast ─────────────────────────────────── */
-      .toast-wrap {
-        position: fixed;
-        top: 14px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        pointer-events: none;
-        width: 90%;
-        max-width: 400px;
+      .overlay-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--brand);
       }
-
       .toast {
-        pointer-events: auto;
-        padding: 10px 18px;
-        border-radius: 8px;
-        font-family: "Cairo", sans-serif;
-        font-size: 0.84rem;
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        padding: 12px 28px;
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Cairo', sans-serif;
         font-weight: 600;
-        color: #fff;
-        background: #1e1b2e;
-        text-align: right;
-        animation: tIn 0.3s ease,
-          tOut 0.3s ease 3.5s forwards;
+        font-size: 14px;
+        z-index: 1000;
+        transition: transform 0.35s, opacity 0.35s;
+        opacity: 0;
+        pointer-events: none;
       }
-
-      .toast-ok {
-        border-right: 4px solid var(--ok);
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
       }
-
-      .toast-err {
-        border-right: 4px solid var(--err);
-      }
-
-      .toast-info {
-        border-right: 4px solid var(--primary);
-      }
-
-      @keyframes tIn {
-        from {
-          opacity: 0;
-          transform: translateY(-14px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes tOut {
-        to {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-      }
-
-      /* ── Distribution Table ────────────────────── */
-      .dist-table-wrap {
-        overflow-x: auto;
-        margin-top: 4px;
-      }
-
-      .dist-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.82rem;
-        line-height: 1.6;
-      }
-
-      .dist-table th {
-        background: var(--primary);
-        color: #fff;
-        font-weight: 700;
-        padding: 8px 12px;
-        white-space: nowrap;
-        text-align: center;
-      }
-
-      .dist-table th:first-child {
-        border-radius: 0 6px 0 0;
-      }
-
-      .dist-table th:last-child {
-        border-radius: 6px 0 0 0;
-      }
-
-      .dist-table td {
-        padding: 8px 12px;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-        font-weight: 600;
-      }
-
-      .dist-table tr:nth-child(even) td {
-        background: #faf9ff;
-      }
-
-      .dist-table tr:hover td {
-        background: #f0edfe;
-      }
-
-      .dist-empty {
-        text-align: center;
-        color: var(--muted);
-        padding: 16px;
-        font-size: 0.85rem;
-      }
-
-      /* ── Logs ──────────────────────────────────── */
-      .log-list {
-        list-style: none;
-        max-height: 340px;
-        overflow-y: auto;
-        padding: 0;
-      }
-
-      .log-item {
-        padding: 8px 10px;
-        border-bottom: 1px solid #f0eff5;
-        font-size: 0.82rem;
-        line-height: 1.6;
-        display: flex;
-        gap: 8px;
-        align-items: flex-start;
-      }
-
-      .log-item:last-child {
-        border-bottom: none;
-      }
-
-      .log-badge {
-        flex-shrink: 0;
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #fff;
-      }
-
-      .log-badge-ok {
+      .toast.success {
         background: var(--ok);
       }
-
-      .log-badge-err {
+      .toast.error {
         background: var(--err);
       }
-
-      .log-detail {
-        flex: 1;
-        color: var(--text);
-        word-break: break-word;
-      }
-
-      .log-meta {
-        font-size: 0.72rem;
-        color: var(--muted);
-        margin-top: 2px;
-      }
-
-      .log-empty {
-        text-align: center;
-        color: var(--muted);
-        padding: 20px;
-        font-size: 0.85rem;
-      }
-
-      /* ── Responsive ────────────────────────────── */
-      @media (max-width: 480px) {
+      @media (max-width: 500px) {
         .btn-grid {
           grid-template-columns: 1fr;
         }
-        .stat-num {
-          font-size: 1.6rem;
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
         }
       }
     </style>
   </head>
-
   <body>
-    <div class="toast-wrap" id="toastWrap"></div>
-
     <div class="overlay" id="overlay">
-      <div class="spin-ring"></div>
+      <div class="spinner"></div>
+      <div class="overlay-text" id="overlayText">
+        جارٍ التنفيذ...
+      </div>
     </div>
+    <div class="toast" id="toast"></div>
 
-    <div class="app">
-      <!-- ═══ Header ═══ -->
+    <div class="wrapper">
       <div class="header">
-        <img
-          src="LOGO_URL_HERE"
-          alt="سلعة"
-          onerror="this.style.display='none'"
-        />
+        <img src="LOGO_URL_HERE" alt="سلعة" />
         <h1>سلعة</h1>
         <p>موردك الأول في الدواجن</p>
       </div>
 
-      <!-- ═══ Stats ═══ -->
-      <div class="card">
-        <div class="card-title">📊 الإحصاءات</div>
-        <div class="stat-row">
-          <div class="stat-box">
-            <div class="stat-num" id="sSent">—</div>
-            <div class="stat-label">Sent to Courier</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="sOrder">—</div>
-            <div class="stat-label">لديها OrderId</div>
-          </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="num" id="statSent">--</div>
+          <div class="lbl">Sent to Courier</div>
         </div>
-        <div class="stat-note" id="sNote">
-          إجمالي الصفوف: —
+        <div class="stat-card">
+          <div class="num" id="statOrderId">--</div>
+          <div class="lbl">لديها Order ID</div>
         </div>
-        <div style="text-align: center; margin-top: 10px">
-          <button
-            class="btn btn-outline btn-sm"
-            onclick="refreshStats()"
-          >
-            🔄 تحديث الإحصاءات
-          </button>
+        <div class="stat-card">
+          <div class="num" id="statTotal">--</div>
+          <div class="lbl">إجمالي الصفوف</div>
+        </div>
+        <div class="stat-card time-card">
+          <div class="num" id="statTime">--</div>
+          <div class="lbl">آخر تحديث</div>
         </div>
       </div>
 
-      <!-- ═══ Distribution Table ═══ -->
-      <div class="card">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-          "
-        >
-          <div class="card-title" style="margin: 0">
-            📦 نتائج التوزيع
-          </div>
-          <button
-            class="btn btn-outline btn-sm"
-            onclick="refreshDistTable()"
-          >
-            🔄
-          </button>
+      <div class="section">
+        <div class="section-title">
+          <span>📊</span> نتائج التوزيع
         </div>
-        <div class="dist-table-wrap" id="distWrap">
-          <div class="dist-empty">جارٍ التحميل…</div>
+        <div id="distTableWrap">
+          <p style="color: var(--muted); text-align: center; font-size: 13px">
+            جارٍ تحميل الجدول...
+          </p>
         </div>
       </div>
 
-      <!-- ═══ Operations ═══ -->
-      <div class="card">
-        <div class="card-title">⚡ العمليات</div>
+      <div class="section">
+        <div class="section-title">
+          <span>⚡</span> العمليات
+        </div>
         <div class="btn-grid">
-          <button
-            class="btn"
-            onclick="runOp('opFetchUpload','رفع طلبات Shipday')"
-          >
+          <button class="btn" onclick="run('opFetchUpload','رفع طلبات Shipday')">
             📥 رفع طلبات Shipday (غدًا)
           </button>
-          <button
-            class="btn"
-            onclick="runOp('opUpdateExisting','تحديث طلبات Shipday')"
-          >
+          <button class="btn" onclick="run('opUpdateExisting','تحديث طلبات Shipday')">
             🔄 تحديث طلبات Shipday
           </button>
-          <button
-            class="btn"
-            onclick="runOp('opDistributeSweep','توزيع Sweep')"
-          >
+          <button class="btn" onclick="run('opDistributeSweep','توزيع Sweep')">
             🧹 توزيع Sweep
           </button>
-          <button
-            class="btn"
-            onclick="runOp('opDistributeToMain','توزيع إلى Main')"
-          >
+          <button class="btn" onclick="run('opDistributeToMain','توزيع إلى Main')">
             📤 توزيع إلى Main
           </button>
-          <button
-            class="btn btn-full"
-            onclick="runOp('opFillMissingIds','تعبئة OrderIds الناقصة')"
-          >
+          <button class="btn full" onclick="run('opFillMissingIds','تعبئة OrderIds')">
             🔑 تعبئة OrderIds الناقصة
           </button>
         </div>
       </div>
 
-      <!-- ═══ Triggers ═══ -->
-      <div class="card">
-        <div class="card-title">⏰ التريقرات</div>
+      <div class="section">
+        <div class="section-title">
+          <span>⏰</span> التريقرات
+        </div>
         <div class="btn-grid">
-          <button
-            class="btn"
-            onclick="runOp('opSetupTrigger','إنشاء Trigger')"
-          >
-            ➕ إنشاء Trigger / 5 دقائق
+          <button class="btn outline" onclick="run('opSetupTrigger','إنشاء Trigger')">
+            ➕ إنشاء Trigger / 5 د
           </button>
-          <button
-            class="btn btn-danger"
-            onclick="runOp('opDeleteTriggers','حذف Triggers')"
-          >
-            🗑 حذف جميع Triggers
+          <button class="btn danger" onclick="run('opDeleteTriggers','حذف Triggers')">
+            🗑 حذف Triggers
+          </button>
+          <button class="btn outline full" onclick="loadTriggers()">
+            👁 عرض التريقرات الحالية
           </button>
         </div>
+        <div class="trigger-list" id="triggerList"></div>
       </div>
 
-      <!-- ═══ Logs ═══ -->
-      <div class="card">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-          "
-        >
-          <div class="card-title" style="margin: 0">
-            📜 آخر العمليات
-          </div>
-          <button
-            class="btn btn-outline btn-sm"
-            onclick="refreshLogs()"
-          >
-            تحديث
+      <div class="section">
+        <div class="section-title">
+          <span>📋</span> سجل آخر العمليات
+        </div>
+        <div class="logs-wrapper" id="logsWrap">
+          <p style="color: var(--muted); text-align: center; font-size: 13px">
+            جارٍ التحميل...
+          </p>
+        </div>
+        <div class="logs-actions">
+          <button class="btn outline" onclick="loadLogs()">
+            تحديث السجل
+          </button>
+          <button class="btn danger" onclick="doClearLogs()">
+            مسح السجل
           </button>
         </div>
-        <ul class="log-list" id="logList">
-          <li class="log-empty">جارٍ التحميل…</li>
-        </ul>
       </div>
     </div>
 
     <script>
-      /* ═══════════════════════════════════════════════
-         Client — Vanilla JS
-         ═══════════════════════════════════════════════ */
+      // ╔════════════════════════════════════════════╗
+      // ║  ⬇️  ضع رابط السكربت هنا  ⬇️              ║
+      // ╚════════════════════════════════════════════╝
+      var API_URL =
+        'https://script.google.com/a/macros/saleaah.com/s/AKfycbxXeUVmz9CMElbz9k4I98w-VrTrZXZJgI5ApwgBJQAvxyYKHB1A5YnKQuzAcLwGsjM/exec';
+      // مثال:
+      // 'https://script.google.com/macros/s/AKfycb.../exec'
 
-      (function () {
-        refreshStats();
-        refreshDistTable();
-        refreshLogs();
-      })();
+      /* ── Helpers ── */
+      function $(id) {
+        return document.getElementById(id);
+      }
 
-      // ── Toast ───────────────────────────────────
+      function showOverlay(msg) {
+        $('overlayText').textContent =
+          msg || 'جارٍ التنفيذ...';
+        $('overlay').classList.add('show');
+      }
+
+      function hideOverlay() {
+        $('overlay').classList.remove('show');
+      }
+
+      var _tt;
       function toast(msg, type) {
-        var wrap = document.getElementById("toastWrap");
-        var el = document.createElement("div");
-        el.className =
-          "toast toast-" + (type || "info");
+        var el = $('toast');
         el.textContent = msg;
-        wrap.appendChild(el);
-        setTimeout(function () {
-          if (el.parentNode) el.remove();
-        }, 4200);
+        el.className = 'toast ' + (type || 'success');
+        clearTimeout(_tt);
+        requestAnimationFrame(function () {
+          el.classList.add('show');
+        });
+        _tt = setTimeout(function () {
+          el.classList.remove('show');
+        }, 3500);
       }
 
-      // ── Spinner ─────────────────────────────────
-      var _busy = false;
-
-      function showSpinner() {
-        _busy = true;
+      function disableButtons(v) {
         document
-          .getElementById("overlay")
-          .classList.add("active");
-        setAllBtns(true);
-      }
-
-      function hideSpinner() {
-        _busy = false;
-        document
-          .getElementById("overlay")
-          .classList.remove("active");
-        setAllBtns(false);
-      }
-
-      function setAllBtns(disabled) {
-        var btns = document.querySelectorAll(".btn");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].disabled = disabled;
-        }
-      }
-
-      // ── Run Operation ───────────────────────────
-      function runOp(fnName, label) {
-        if (_busy) return;
-        showSpinner();
-        google.script.run
-          .withSuccessHandler(function (res) {
-            hideSpinner();
-            if (res && res.ok) {
-              toast(
-                "\u2705 " +
-                  label +
-                  " \u2014 " +
-                  fmtDur(res.duration),
-                "ok"
-              );
-            } else {
-              toast(
-                "\u274C " +
-                  label +
-                  ": " +
-                  (res ? res.message : "خطأ"),
-                "err"
-              );
-            }
-            refreshStats();
-            refreshDistTable();
-            refreshLogs();
-          })
-          .withFailureHandler(function (err) {
-            hideSpinner();
-            toast(
-              "\u274C " + label + ": " + err.message,
-              "err"
-            );
-          })
-          [fnName]();
-      }
-
-      // ── Stats ───────────────────────────────────
-      function refreshStats() {
-        google.script.run
-          .withSuccessHandler(function (s) {
-            if (!s) return;
-            txt("sSent", s.sentToCourier);
-            txt("sOrder", s.hasOrderId);
-            txt(
-              "sNote",
-              "\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0635\u0641\u0648\u0641: " +
-                (s.totalRows || 0)
-            );
-          })
-          .withFailureHandler(function () {})
-          .getStats();
-      }
-
-      // ── Distribution Table ──────────────────────
-      function refreshDistTable() {
-        google.script.run
-          .withSuccessHandler(function (res) {
-            renderDistTable(res);
-          })
-          .withFailureHandler(function (err) {
-            document.getElementById(
-              "distWrap"
-            ).innerHTML =
-              '<div class="dist-empty">\u274C ' +
-              esc(err.message) +
-              "</div>";
-          })
-          .getDistributionTable();
-      }
-
-      function renderDistTable(res) {
-        var wrap = document.getElementById("distWrap");
-
-        if (
-          !res ||
-          !res.ok ||
-          !res.headers ||
-          !res.headers.length
-        ) {
-          wrap.innerHTML =
-            '<div class="dist-empty">' +
-            (res && res.message
-              ? esc(res.message)
-              : "لا توجد بيانات") +
-            "</div>";
-          return;
-        }
-
-        var h = res.headers;
-        var r = res.rows;
-
-        var html = '<table class="dist-table"><thead><tr>';
-        for (var i = 0; i < h.length; i++) {
-          html += "<th>" + esc(h[i]) + "</th>";
-        }
-        html += "</tr></thead><tbody>";
-
-        if (!r.length) {
-          html +=
-            '<tr><td colspan="' +
-            h.length +
-            '" style="text-align:center;color:#999;padding:14px">' +
-            "لا توجد صفوف</td></tr>";
-        } else {
-          for (var j = 0; j < r.length; j++) {
-            html += "<tr>";
-            for (var k = 0; k < h.length; k++) {
-              var val = r[j][h[k]] || "";
-              html += "<td>" + esc(val) + "</td>";
-            }
-            html += "</tr>";
-          }
-        }
-
-        html += "</tbody></table>";
-        wrap.innerHTML = html;
-      }
-
-      // ── Logs ────────────────────────────────────
-      function refreshLogs() {
-        google.script.run
-          .withSuccessHandler(function (res) {
-            renderLogs(
-              res && res.logs ? res.logs : []
-            );
-          })
-          .withFailureHandler(function () {
-            renderLogs([]);
-          })
-          .getRecentLogs(12);
-      }
-
-      function renderLogs(logs) {
-        var ul = document.getElementById("logList");
-        if (!logs.length) {
-          ul.innerHTML =
-            '<li class="log-empty">\u0644\u0627 \u062A\u0648\u062C\u062F \u0639\u0645\u0644\u064A\u0627\u062A \u0628\u0639\u062F</li>';
-          return;
-        }
-        var html = "";
-        for (var i = 0; i < logs.length; i++) {
-          var l = logs[i];
-          var isOk = l.status === "OK";
-          html +=
-            '<li class="log-item">' +
-            '<span class="log-badge ' +
-            (isOk ? "log-badge-ok" : "log-badge-err") +
-            '">' +
-            esc(l.status) +
-            "</span>" +
-            '<div class="log-detail">' +
-            "<strong>" +
-            esc(l.task) +
-            "</strong>" +
-            (l.details && l.details !== "OK"
-              ? " \u2014 " +
-                esc(trunc(l.details, 120))
-              : "") +
-            '<div class="log-meta">' +
-            fmtTs(l.timestamp) +
-            " \u00B7 " +
-            fmtDur(l.duration) +
-            "</div></div></li>";
-        }
-        ul.innerHTML = html;
-      }
-
-      // ── Helpers ─────────────────────────────────
-      function txt(id, v) {
-        var el = document.getElementById(id);
-        if (el)
-          el.textContent = v !== undefined ? v : "\u2014";
+          .querySelectorAll('.btn')
+          .forEach(function (b) {
+            b.disabled = v;
+          });
       }
 
       function esc(s) {
-        var d = document.createElement("div");
+        if (s == null) return '';
+        var d = document.createElement('div');
         d.appendChild(
-          document.createTextNode(s || "")
+          document.createTextNode(String(s))
         );
         return d.innerHTML;
       }
 
-      function trunc(s, max) {
-        s = String(s || "");
-        return s.length > max
-          ? s.slice(0, max) + "\u2026"
-          : s;
-      }
-
-      function fmtDur(ms) {
-        if (!ms && ms !== 0) return "";
-        return ms >= 1000
-          ? (ms / 1000).toFixed(1) + " \u062B"
-          : ms + " \u0645\u0644\u062B";
-      }
-
-      function fmtTs(iso) {
-        if (!iso) return "";
-        try {
-          var d = new Date(iso);
-          return d.toLocaleString("ar-SA", {
-            timeZone: "Asia/Riyadh",
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+      /* ── API Calls ── */
+      function apiGet(action, params) {
+        var url = new URL(API_URL);
+        url.searchParams.set('action', action);
+        if (params) {
+          Object.keys(params).forEach(function (k) {
+            url.searchParams.set(k, params[k]);
           });
-        } catch (_) {
-          return String(iso).slice(0, 19);
         }
+        return fetch(url.toString(), {
+          redirect: 'follow'
+        }).then(function (r) {
+          return r.json();
+        });
       }
+
+      function apiPost(action) {
+        return fetch(API_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify({ action: action })
+        }).then(function (r) {
+          return r.json();
+        });
+      }
+
+      /* ── Run Operation (POST) ── */
+      function run(fnName, label) {
+        showOverlay(label + '...');
+        disableButtons(true);
+        apiPost(fnName)
+          .then(function (r) {
+            hideOverlay();
+            disableButtons(false);
+            if (r && r.ok) {
+              toast(
+                label + ' ✅ (' + r.duration + ' ث)',
+                'success'
+              );
+            } else {
+              toast(
+                (r && r.message) || 'خطأ غير معروف',
+                'error'
+              );
+            }
+            loadStats();
+            loadLogs();
+            if (
+              fnName === 'opDistributeSweep' ||
+              fnName === 'opDistributeToMain'
+            ) {
+              loadDistTable();
+            }
+          })
+          .catch(function (e) {
+            hideOverlay();
+            disableButtons(false);
+            toast(
+              e.message || 'خطأ في الاتصال',
+              'error'
+            );
+          });
+      }
+
+      /* ── Load Stats ── */
+      function loadStats() {
+        apiGet('getStats').then(function (r) {
+          if (r && r.ok) {
+            $('statSent').textContent = r.sentToCourier;
+            $('statOrderId').textContent = r.withOrderId;
+            $('statTotal').textContent = r.totalRows;
+            $('statTime').textContent = r.now;
+          }
+        });
+      }
+
+      /* ── Load Distribution Table ── */
+      function loadDistTable() {
+        apiGet('getDistributionTable')
+          .then(function (r) {
+            var w = $('distTableWrap');
+            if (!r || !r.ok) {
+              w.innerHTML =
+                '<p style="color:var(--err);text-align:center;font-size:13px">' +
+                esc((r && r.message) || 'خطأ') +
+                '</p>';
+              return;
+            }
+            if (
+              !r.headers ||
+              r.headers.length === 0
+            ) {
+              w.innerHTML =
+                '<p style="color:var(--muted);text-align:center;font-size:13px">لا توجد بيانات</p>';
+              return;
+            }
+            var h =
+              '<table class="dist-table"><thead><tr>';
+            r.headers.forEach(function (c) {
+              h += '<th>' + esc(c) + '</th>';
+            });
+            h += '</tr></thead><tbody>';
+            r.rows.forEach(function (row) {
+              h += '<tr>';
+              row.forEach(function (c) {
+                h += '<td>' + esc(c) + '</td>';
+              });
+              h += '</tr>';
+            });
+            h += '</tbody></table>';
+            w.innerHTML = h;
+          })
+          .catch(function () {
+            $('distTableWrap').innerHTML =
+              '<p style="color:var(--err);text-align:center;font-size:13px">خطأ في تحميل الجدول</p>';
+          });
+      }
+
+      /* ── Load Logs ── */
+      function loadLogs() {
+        apiGet('getRecentLogs', { limit: 12 })
+          .then(function (r) {
+            var w = $('logsWrap');
+            if (
+              !r ||
+              !r.ok ||
+              !r.logs ||
+              !r.logs.length
+            ) {
+              w.innerHTML =
+                '<p style="color:var(--muted);text-align:center;font-size:13px">لا توجد سجلات بعد</p>';
+              return;
+            }
+            var h = '';
+            r.logs.forEach(function (lg) {
+              var cls =
+                lg.status === 'OK' ? 'ok' : 'err';
+              h += '<div class="log-row">';
+              h +=
+                '<div class="log-dot ' +
+                cls +
+                '"></div>';
+              h += '<div class="log-info">';
+              h +=
+                '<strong>' +
+                esc(lg.task) +
+                '</strong>';
+              h +=
+                '<span class="details">' +
+                esc(lg.details) +
+                '</span>';
+              h += '</div>';
+              h += '<div class="log-meta">';
+              h += esc(lg.timestamp);
+              h +=
+                '<br>' +
+                (lg.duration || '0') +
+                ' ث';
+              h += '</div></div>';
+            });
+            w.innerHTML = h;
+          })
+          .catch(function () {
+            $('logsWrap').innerHTML =
+              '<p style="color:var(--err);text-align:center">خطأ</p>';
+          });
+      }
+
+      /* ── Load Triggers ── */
+      function loadTriggers() {
+        var list = $('triggerList');
+        list.classList.add('show');
+        list.innerHTML =
+          '<p style="color:var(--muted);text-align:center">جارٍ...</p>';
+        apiGet('opListTriggers').then(function (r) {
+          if (
+            !r ||
+            !r.ok ||
+            !r.triggers ||
+            !r.triggers.length
+          ) {
+            list.innerHTML =
+              '<div style="color:var(--muted);text-align:center;padding:8px">لا توجد تريقرات</div>';
+            return;
+          }
+          var h = '';
+          r.triggers.forEach(function (t) {
+            h += '<div class="trigger-item">';
+            h += '<span>' + esc(t.handler) + '</span>';
+            h +=
+              '<span style="color:var(--muted)">' +
+              esc(t.type) +
+              '</span>';
+            h += '</div>';
+          });
+          list.innerHTML = h;
+        });
+      }
+
+      /* ── Clear Logs ── */
+      function doClearLogs() {
+        if (
+          !confirm('هل تريد مسح جميع السجلات؟')
+        )
+          return;
+        showOverlay('مسح السجل...');
+        apiPost('clearLogs')
+          .then(function (r) {
+            hideOverlay();
+            if (r && r.ok) {
+              toast('تم مسح السجل ✅', 'success');
+              loadLogs();
+            } else {
+              toast(
+                (r && r.message) || 'خطأ',
+                'error'
+              );
+            }
+          })
+          .catch(function (e) {
+            hideOverlay();
+            toast(e.message, 'error');
+          });
+      }
+
+      /* ── Init ── */
+      loadStats();
+      loadDistTable();
+      loadLogs();
     </script>
   </body>
 </html>
