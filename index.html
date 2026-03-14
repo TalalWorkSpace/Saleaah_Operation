@@ -19,7 +19,7 @@
         --ok: #22c55e;
         --err: #ef4444;
         --bg: #f8f7fc;
-        --card: #ffffff;
+        --card: #fff;
         --text: #1e1e2e;
         --muted: #71717a;
         --radius: 14px;
@@ -32,13 +32,11 @@
       }
       body {
         font-family: 'Cairo', sans-serif;
-        font-weight: 400;
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
         direction: rtl;
         line-height: 1.6;
-        position: relative;
       }
       body::before {
         content: '';
@@ -87,6 +85,26 @@
       .header p {
         font-size: 14px;
         color: var(--muted);
+      }
+      .conn-status {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .conn-status.ok {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .conn-status.err {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .conn-status.loading {
+        background: #fef3c7;
+        color: #92400e;
       }
       .stats-grid {
         display: grid;
@@ -187,7 +205,7 @@
         font-weight: 600;
         font-size: 13px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.2s;
         background: var(--brand);
         color: #fff;
       }
@@ -374,6 +392,12 @@
         <img src="LOGO_URL_HERE" alt="سلعة" />
         <h1>سلعة</h1>
         <p>موردك الأول في الدواجن</p>
+        <div
+          class="conn-status loading"
+          id="connStatus"
+        >
+          ⏳ جارٍ الاتصال...
+        </div>
       </div>
 
       <div class="stats-grid">
@@ -400,7 +424,13 @@
           <span>📊</span> نتائج التوزيع
         </div>
         <div id="distTableWrap">
-          <p style="color: var(--muted); text-align: center; font-size: 13px">
+          <p
+            style="
+              color: var(--muted);
+              text-align: center;
+              font-size: 13px;
+            "
+          >
             جارٍ تحميل الجدول...
           </p>
         </div>
@@ -411,19 +441,34 @@
           <span>⚡</span> العمليات
         </div>
         <div class="btn-grid">
-          <button class="btn" onclick="run('opFetchUpload','رفع طلبات Shipday')">
+          <button
+            class="btn"
+            onclick="run('opFetchUpload','رفع طلبات Shipday')"
+          >
             📥 رفع طلبات Shipday (غدًا)
           </button>
-          <button class="btn" onclick="run('opUpdateExisting','تحديث طلبات Shipday')">
+          <button
+            class="btn"
+            onclick="run('opUpdateExisting','تحديث طلبات Shipday')"
+          >
             🔄 تحديث طلبات Shipday
           </button>
-          <button class="btn" onclick="run('opDistributeSweep','توزيع Sweep')">
+          <button
+            class="btn"
+            onclick="run('opDistributeSweep','توزيع Sweep')"
+          >
             🧹 توزيع Sweep
           </button>
-          <button class="btn" onclick="run('opDistributeToMain','توزيع إلى Main')">
+          <button
+            class="btn"
+            onclick="run('opDistributeToMain','توزيع إلى Main')"
+          >
             📤 توزيع إلى Main
           </button>
-          <button class="btn full" onclick="run('opFillMissingIds','تعبئة OrderIds')">
+          <button
+            class="btn full"
+            onclick="run('opFillMissingIds','تعبئة OrderIds')"
+          >
             🔑 تعبئة OrderIds الناقصة
           </button>
         </div>
@@ -434,17 +479,27 @@
           <span>⏰</span> التريقرات
         </div>
         <div class="btn-grid">
-          <button class="btn outline" onclick="run('opSetupTrigger','إنشاء Trigger')">
+          <button
+            class="btn outline"
+            onclick="run('opSetupTrigger','إنشاء Trigger')"
+          >
             ➕ إنشاء Trigger / 5 د
           </button>
-          <button class="btn danger" onclick="run('opDeleteTriggers','حذف Triggers')">
+          <button
+            class="btn danger"
+            onclick="run('opDeleteTriggers','حذف Triggers')"
+          >
             🗑 حذف Triggers
           </button>
-          <button class="btn outline full" onclick="loadTriggers()">
+          <button
+            class="btn outline full"
+            onclick="loadTriggers()"
+          >
             👁 عرض التريقرات الحالية
           </button>
         </div>
-        <div class="trigger-list" id="triggerList"></div>
+        <div class="trigger-list" id="triggerList">
+        </div>
       </div>
 
       <div class="section">
@@ -452,15 +507,27 @@
           <span>📋</span> سجل آخر العمليات
         </div>
         <div class="logs-wrapper" id="logsWrap">
-          <p style="color: var(--muted); text-align: center; font-size: 13px">
+          <p
+            style="
+              color: var(--muted);
+              text-align: center;
+              font-size: 13px;
+            "
+          >
             جارٍ التحميل...
           </p>
         </div>
         <div class="logs-actions">
-          <button class="btn outline" onclick="loadLogs()">
+          <button
+            class="btn outline"
+            onclick="loadLogs()"
+          >
             تحديث السجل
           </button>
-          <button class="btn danger" onclick="doClearLogs()">
+          <button
+            class="btn danger"
+            onclick="doClearLogs()"
+          >
             مسح السجل
           </button>
         </div>
@@ -468,34 +535,32 @@
     </div>
 
     <script>
-      // ╔════════════════════════════════════════════╗
-      // ║  ⬇️  ضع رابط السكربت هنا  ⬇️              ║
-      // ╚════════════════════════════════════════════╝
-      var API_URL =
-        'https://script.google.com/a/macros/saleaah.com/s/AKfycbxXeUVmz9CMElbz9k4I98w-VrTrZXZJgI5ApwgBJQAvxyYKHB1A5YnKQuzAcLwGsjM/exec';
-      // مثال:
-      // 'https://script.google.com/macros/s/AKfycb.../exec'
+      /* ╔═══════════════════════════════════════╗
+         ║  ⬇️  ضع رابط السكربت هنا ⬇️         ║
+         ╚═══════════════════════════════════════╝ */
+      var API =
+        'https://script.google.com/a/macros/saleaah.com/s/AKfycbx3J_04iXqtqiA-4eUG9BxFvL7uFy_TajT9CEI1oVVU2np-hjVxV7p6xX3sqdUnXpjV/exec';
+      /*  مثال:
+       *  'https://script.google.com/macros/s/AKfycb.../exec'
+       */
 
       /* ── Helpers ── */
       function $(id) {
         return document.getElementById(id);
       }
-
-      function showOverlay(msg) {
+      function showOverlay(m) {
         $('overlayText').textContent =
-          msg || 'جارٍ التنفيذ...';
+          m || 'جارٍ التنفيذ...';
         $('overlay').classList.add('show');
       }
-
       function hideOverlay() {
         $('overlay').classList.remove('show');
       }
-
       var _tt;
-      function toast(msg, type) {
+      function toast(m, t) {
         var el = $('toast');
-        el.textContent = msg;
-        el.className = 'toast ' + (type || 'success');
+        el.textContent = m;
+        el.className = 'toast ' + (t || 'success');
         clearTimeout(_tt);
         requestAnimationFrame(function () {
           el.classList.add('show');
@@ -504,7 +569,6 @@
           el.classList.remove('show');
         }, 3500);
       }
-
       function disableButtons(v) {
         document
           .querySelectorAll('.btn')
@@ -512,7 +576,6 @@
             b.disabled = v;
           });
       }
-
       function esc(s) {
         if (s == null) return '';
         var d = document.createElement('div');
@@ -522,46 +585,106 @@
         return d.innerHTML;
       }
 
-      /* ── API Calls ── */
-      function apiGet(action, params) {
-        var url = new URL(API_URL);
-        url.searchParams.set('action', action);
-        if (params) {
-          Object.keys(params).forEach(function (k) {
-            url.searchParams.set(k, params[k]);
-          });
+      /* ── JSONP Engine ── */
+      /* يتفادى مشاكل CORS بالكامل */
+      var _cbCount = 0;
+      function jsonp(action, params) {
+        return new Promise(function (resolve, reject) {
+          var cbName = '_cb' + _cbCount++;
+          var timeout = setTimeout(function () {
+            cleanup();
+            reject(new Error('انتهت مهلة الاتصال'));
+          }, 120000);
+
+          window[cbName] = function (data) {
+            clearTimeout(timeout);
+            cleanup();
+            resolve(data);
+          };
+
+          function cleanup() {
+            delete window[cbName];
+            if (script.parentNode) {
+              script.parentNode.removeChild(script);
+            }
+          }
+
+          var url =
+            API +
+            '?callback=' +
+            cbName +
+            '&action=' +
+            encodeURIComponent(action);
+          if (params) {
+            Object.keys(params).forEach(function (k) {
+              url +=
+                '&' +
+                encodeURIComponent(k) +
+                '=' +
+                encodeURIComponent(params[k]);
+            });
+          }
+
+          var script =
+            document.createElement('script');
+          script.src = url;
+          script.onerror = function () {
+            clearTimeout(timeout);
+            cleanup();
+            reject(new Error('فشل الاتصال بالسيرفر'));
+          };
+          document.body.appendChild(script);
+        });
+      }
+
+      /* ── Connection Test ── */
+      function testConnection() {
+        var el = $('connStatus');
+        el.className = 'conn-status loading';
+        el.textContent = '⏳ جارٍ الاتصال...';
+
+        if (
+          !API ||
+          API === 'YOUR_APPS_SCRIPT_URL_HERE'
+        ) {
+          el.className = 'conn-status err';
+          el.textContent =
+            '❌ لم يتم تعيين رابط API — عدّل API في الكود';
+          return;
         }
-        return fetch(url.toString(), {
-          redirect: 'follow'
-        }).then(function (r) {
-          return r.json();
-        });
+
+        jsonp('getStats')
+          .then(function (r) {
+            if (r && r.ok) {
+              el.className = 'conn-status ok';
+              el.textContent = '✅ متصل بنجاح';
+            } else {
+              el.className = 'conn-status err';
+              el.textContent =
+                '❌ ' +
+                ((r && r.message) || 'خطأ غير معروف');
+            }
+          })
+          .catch(function (e) {
+            el.className = 'conn-status err';
+            el.textContent = '❌ ' + e.message;
+          });
       }
 
-      function apiPost(action) {
-        return fetch(API_URL, {
-          method: 'POST',
-          redirect: 'follow',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({ action: action })
-        }).then(function (r) {
-          return r.json();
-        });
-      }
-
-      /* ── Run Operation (POST) ── */
-      function run(fnName, label) {
+      /* ── Run Operation ── */
+      function run(action, label) {
         showOverlay(label + '...');
         disableButtons(true);
-        apiPost(fnName)
+        jsonp(action)
           .then(function (r) {
             hideOverlay();
             disableButtons(false);
             if (r && r.ok) {
               toast(
-                label + ' ✅ (' + r.duration + ' ث)',
+                label +
+                  ' ✅ (' +
+                  (r.duration || 0) +
+                  ' ث)',
                 'success'
               );
             } else {
@@ -573,8 +696,8 @@
             loadStats();
             loadLogs();
             if (
-              fnName === 'opDistributeSweep' ||
-              fnName === 'opDistributeToMain'
+              action === 'opDistributeSweep' ||
+              action === 'opDistributeToMain'
             ) {
               loadDistTable();
             }
@@ -582,19 +705,18 @@
           .catch(function (e) {
             hideOverlay();
             disableButtons(false);
-            toast(
-              e.message || 'خطأ في الاتصال',
-              'error'
-            );
+            toast(e.message, 'error');
           });
       }
 
       /* ── Load Stats ── */
       function loadStats() {
-        apiGet('getStats').then(function (r) {
+        jsonp('getStats').then(function (r) {
           if (r && r.ok) {
-            $('statSent').textContent = r.sentToCourier;
-            $('statOrderId').textContent = r.withOrderId;
+            $('statSent').textContent =
+              r.sentToCourier;
+            $('statOrderId').textContent =
+              r.withOrderId;
             $('statTotal').textContent = r.totalRows;
             $('statTime').textContent = r.now;
           }
@@ -603,13 +725,15 @@
 
       /* ── Load Distribution Table ── */
       function loadDistTable() {
-        apiGet('getDistributionTable')
+        jsonp('getDistributionTable')
           .then(function (r) {
             var w = $('distTableWrap');
             if (!r || !r.ok) {
               w.innerHTML =
                 '<p style="color:var(--err);text-align:center;font-size:13px">' +
-                esc((r && r.message) || 'خطأ') +
+                esc(
+                  (r && r.message) || 'خطأ في الجدول'
+                ) +
                 '</p>';
               return;
             }
@@ -645,7 +769,7 @@
 
       /* ── Load Logs ── */
       function loadLogs() {
-        apiGet('getRecentLogs', { limit: 12 })
+        jsonp('getRecentLogs', { limit: 12 })
           .then(function (r) {
             var w = $('logsWrap');
             if (
@@ -689,7 +813,7 @@
           })
           .catch(function () {
             $('logsWrap').innerHTML =
-              '<p style="color:var(--err);text-align:center">خطأ</p>';
+              '<p style="color:var(--muted);text-align:center">خطأ في السجلات</p>';
           });
       }
 
@@ -699,7 +823,7 @@
         list.classList.add('show');
         list.innerHTML =
           '<p style="color:var(--muted);text-align:center">جارٍ...</p>';
-        apiGet('opListTriggers').then(function (r) {
+        jsonp('opListTriggers').then(function (r) {
           if (
             !r ||
             !r.ok ||
@@ -713,7 +837,8 @@
           var h = '';
           r.triggers.forEach(function (t) {
             h += '<div class="trigger-item">';
-            h += '<span>' + esc(t.handler) + '</span>';
+            h +=
+              '<span>' + esc(t.handler) + '</span>';
             h +=
               '<span style="color:var(--muted)">' +
               esc(t.type) +
@@ -731,7 +856,7 @@
         )
           return;
         showOverlay('مسح السجل...');
-        apiPost('clearLogs')
+        jsonp('clearLogs')
           .then(function (r) {
             hideOverlay();
             if (r && r.ok) {
@@ -751,6 +876,7 @@
       }
 
       /* ── Init ── */
+      testConnection();
       loadStats();
       loadDistTable();
       loadLogs();
